@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETP MM — Restrike Monitor | 23 Mar 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d1117;color:#e6edf3;font-family:'Inter',sans-serif;padding:32px 24px}
+.header{max-width:900px;margin:0 auto 32px}
+.badge{display:inline-block;background:#1c2128;border:1px solid #30363d;color:#8b949e;
+  font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 10px;
+  border-radius:4px;margin-bottom:12px}
+h1{font-size:22px;font-weight:600;color:#e6edf3;margin-bottom:6px}
+.sub{font-size:13px;color:#8b949e;font-family:'JetBrains Mono',monospace}
+.event-box{max-width:900px;margin:0 auto 28px;background:#161b22;
+  border:1px solid #30363d;border-left:3px solid #ffa657;
+  border-radius:6px;padding:14px 18px}
+.event-box .time{font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:#ffa657;margin-bottom:4px}
+.event-box p{font-size:13px;color:#c9d1d9;line-height:1.6}
+.event-box strong{color:#e6edf3}
+.grid{max-width:900px;margin:0 auto 28px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px}
+.card .label{font-size:10px;color:#8b949e;text-transform:uppercase;
+  letter-spacing:.6px;margin-bottom:6px;font-family:'JetBrains Mono',monospace}
+.card .value{font-size:22px;font-weight:600}
+.card .delta{font-size:11px;color:#8b949e;margin-top:4px}
+.red{color:#f85149}.orange{color:#ffa657}.green{color:#3fb950}.purple{color:#bc8cff}
+.chart-wrap{max-width:900px;margin:0 auto 28px;background:#161b22;
+  border:1px solid #30363d;border-radius:8px;padding:20px}
+.chart-wrap img{width:100%;border-radius:4px}
+.stats{max-width:900px;margin:0 auto 28px;background:#161b22;
+  border:1px solid #30363d;border-radius:8px;padding:20px}
+.stats h3{font-size:13px;font-weight:600;color:#e6edf3;margin-bottom:14px;
+  text-transform:uppercase;letter-spacing:.8px;font-family:'JetBrains Mono',monospace}
+.stat-row{display:flex;justify-content:space-between;padding:8px 0;
+  border-bottom:1px solid #21262d;font-size:13px}
+.stat-row:last-child{border-bottom:none}
+.stat-label{color:#8b949e}
+.stat-val{font-family:'JetBrains Mono',monospace;color:#e6edf3;font-weight:500}
+.stat-val.red{color:#f85149}
+.stat-val.orange{color:#ffa657}
+.stat-val.green{color:#3fb950}
+.scenario-box{max-width:900px;margin:0 auto 28px;background:#161b22;
+  border:1px solid #30363d;border-radius:8px;padding:20px}
+.scenario-box h3{font-size:13px;font-weight:600;color:#e6edf3;margin-bottom:14px;
+  text-transform:uppercase;letter-spacing:.8px;font-family:'JetBrains Mono',monospace}
+.scenario-row{display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid #21262d;font-size:13px}
+.scenario-row:last-child{border-bottom:none}
+.scenario-label{color:#8b949e}
+.scenario-badge{font-family:'JetBrains Mono',monospace;font-size:11px;
+  padding:3px 10px;border-radius:4px;font-weight:600}
+.badge-safe{background:#0d2c0d;color:#3fb950;border:1px solid #1a4a1a}
+.badge-restrike{background:#2c0000;color:#f85149;border:1px solid #4a0000}
+.badge-actual{background:#2c1c00;color:#ffa657;border:1px solid #4a3000}
+.note{max-width:900px;margin:0 auto 28px;background:#0d2c0d;
+  border:1px solid #1a4a1a;border-radius:8px;padding:14px 18px;
+  font-size:12px;color:#7ee787;line-height:1.7}
+.note strong{color:#3fb950}
+footer{max-width:900px;margin:32px auto 0;font-size:11px;
+  color:#484f58;font-family:'JetBrains Mono',monospace;
+  border-top:1px solid #21262d;padding-top:16px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">etp-market-making / 2_restrike_monitor</div>
+  <h1>ETP Restrike Monitor</h1>
+  <div class="sub">WisdomTree 3x Daily Brent Crude (3BRL) · ICE Brent 2nd month future · 23 March 2026</div>
+</div>
+
+<div class="event-box">
+  <div class="time">11:08 London · Near-miss restrike event</div>
+  <p>Brent 2nd future fell <strong>-13.3%</strong> to $93.62 — reaching <strong>66.3% of the -20% restrike barrier</strong>.
+  Only <strong>$7.28 (6.7%) separated</strong> the session low from triggering an intraday reset on 3BRL.
+  An additional -8% move on Brent would have breached $86.34 and triggered the restrike.</p>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="label">Max proximity</div>
+    <div class="value orange">66.3%</div>
+    <div class="delta">of -20% restrike barrier</div>
+  </div>
+  <div class="card">
+    <div class="label">Margin to restrike</div>
+    <div class="value green">$7.28</div>
+    <div class="delta">6.7% remaining on underlying</div>
+  </div>
+  <div class="card">
+    <div class="label">3BRL intraday low</div>
+    <div class="value red">-39.8%</div>
+    <div class="delta">no reset — restrike not triggered</div>
+  </div>
+  <div class="card">
+    <div class="label">Restrike status</div>
+    <div class="value green">Safe</div>
+    <div class="delta">barrier at $86.34 not breached</div>
+  </div>
+</div>
+
+<div class="chart-wrap">
+  <img src="restrike_monitor.png" alt="Restrike Monitor — 3-panel dashboard">
+</div>
+
+<div class="stats">
+  <h3>Session stats</h3>
+  <div class="stat-row"><span class="stat-label">Open price</span><span class="stat-val">$107.92</span></div>
+  <div class="stat-row"><span class="stat-label">Session low</span><span class="stat-val orange">$93.62  (-13.3%)</span></div>
+  <div class="stat-row"><span class="stat-label">Restrike barrier</span><span class="stat-val">$86.34  (-20% on underlying)</span></div>
+  <div class="stat-row"><span class="stat-label">Warning barrier</span><span class="stat-val">$90.65  (-16% on underlying)</span></div>
+  <div class="stat-row"><span class="stat-label">Margin to restrike</span><span class="stat-val green">$7.28  (6.7% remaining)</span></div>
+  <div class="stat-row"><span class="stat-label">Max restrike proximity</span><span class="stat-val orange">66.3%</span></div>
+  <div class="stat-row"><span class="stat-label">Time in warning zone</span><span class="stat-val">0 min</span></div>
+  <div class="stat-row"><span class="stat-label">3BRL intraday low (est.)</span><span class="stat-val red">-39.8%</span></div>
+  <div class="stat-row"><span class="stat-label">3BRL end of day (est.)</span><span class="stat-val red">-18.9%</span></div>
+  <div class="stat-row"><span class="stat-label">3BRL at restrike (would be)</span><span class="stat-val">-60%  → intraday reset</span></div>
+  <div class="stat-row"><span class="stat-label">Restrike triggered</span><span class="stat-val green">No</span></div>
+</div>
+
+<div class="scenario-box">
+  <h3>Near-miss scenario analysis</h3>
+  <div class="scenario-row">
+    <span class="scenario-label">Actual session low — $93.62 (-13.3%)</span>
+    <span class="scenario-badge badge-actual">66.3% proximity</span>
+  </div>
+  <div class="scenario-row">
+    <span class="scenario-label">+5% additional move — $88.94 (-17.6%)</span>
+    <span class="scenario-badge badge-safe">Safe — 88% proximity</span>
+  </div>
+  <div class="scenario-row">
+    <span class="scenario-label">+8% additional move — $86.13 (-20.2%)</span>
+    <span class="scenario-badge badge-restrike">Restrike triggered</span>
+  </div>
+</div>
+
+<div class="note">
+  <strong>Restrike mechanics.</strong> The -20% trigger is measured on the
+  <strong>underlying</strong> (ICE Brent 2nd month future), not on the 3BRL product itself.
+  At -20% on the underlying, 3BRL would have lost ~60% intraday before the
+  intraday reset — at which point a new base price is set and leverage recalculated
+  from that point for the remainder of the session.
+  Today's -13.3% on the underlying translated to -39.8% on 3BRL — no reset triggered,
+  but a significant loss for holders purely from 3x leverage amplification.
+</div>
+
+<footer>
+  Data: yfinance BZ=F (Brent 2nd future proxy) · 1-min intraday · 23 Mar 2026 ·
+  Restrike monitor calibrated on WisdomTree 3BRL product specs ·
+  github.com/Benjadeville/etp-mm
+</footer>
+
+</body>
+</html>
