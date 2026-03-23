@@ -1,3 +1,14 @@
+# ETP Market Making
+
+Quantitative analysis of leveraged ETP market making mechanics,
+calibrated on real intraday events — built from a market maker perspective.
+
+All modules use real 1-minute intraday data captured on 23 March 2026,
+the day Brent fell -13.3% in under 2 minutes following a Trump Truth Social
+post on Iran ceasefire talks.
+
+---
+
 # Module 1 — ETP Spread Model
 
 Real-data analysis of market maker spread dynamics on a 3x leveraged ETP
@@ -88,15 +99,111 @@ realized vol exceeds **3x the session baseline** (session median):
 | Realized vol at spike | ~300% ann. |
 | Book suspended | 56 min (11:05 → 12:49) |
 
-**Key finding:** restrike was not triggered today — the underlying held above
--20%. The 3BRL lost ~39.8% intraday purely from 3x leverage amplification.
-The MM suspension was entirely vol-driven, not restrike-driven.
+**Key findings:**
+- Restrike was not triggered today — the underlying held above -20% (66.3% max proximity)
+- The 3BRL lost ~39.8% intraday purely from 3x leverage amplification, with no reset
+- The MM suspension (theoretical) was entirely vol-driven: realized vol hit 300% ann. vs a 54% session baseline (6x)
+- Spreads reached 800 bps (44x normal)
+- The spread model `18 × (rvol/20)^2.2` captures the superlinear relationship between vol and spreads:
+  spreads explode faster than vol because the MM faces both wider futures spreads AND larger delta exposure simultaneously
+- Using a relative threshold (3x session baseline) rather than a fixed absolute threshold is critical
+  in a prolonged stress regime — the Iran war context since 28 Feb had already elevated baseline vol to 54% ann.
 
 ---
 
 ## Output
 
 Live dashboard → [spread_model.html](https://benjadeville.github.io/etp-mm/1_spread_model/spread_model.html)
+
+# Module 2 — Delta Hedging Cost
+
+Quantitative analysis of market maker delta hedging costs on a 3x leveraged
+ETP during an extreme intraday event — calibrated on 23 March 2026.
+
+---
+
+## Context
+
+At 11:08 London time, Brent 2nd month future fell -13.3% in under 2 minutes.
+The MM was forced to rebalance from **278 to 320 futures contracts** (+42 contracts)
+to maintain delta neutrality on a hypothetical $10M 3BRL exposure.
+
+Total hedging cost: **201.5 bps** — of which **94% came from gamma loss** (190 bps),
+not transaction costs (11 bps).
+
+---
+
+## Key concept — why short gamma dominates
+
+A leveraged ETP market maker is structurally **short gamma**:
+- MM sells 3BRL to clients and hedges with Brent futures
+- When Brent moves sharply, the MM must rebalance at unfavorable prices
+- The 3x daily reset forces continuous delta rebalancing
+- Path variance — not bid-ask spreads — is the dominant cost
+
+This is why MMs widen spreads dramatically in stress: they are pricing in
+expected gamma loss, not just transaction costs.
+
+---
+
+## What this notebook models
+
+### 1. Data
+- Source: `yfinance` — ticker `BZ=F` (Brent front future, proxy for 2nd month)
+- Granularity: 1-minute intraday
+- Window: 23 March 2026
+
+### 2. Computed series
+- **Delta** — number of futures contracts to hedge `(AUM × leverage) / (contract_size × spot)`
+- **Delta change** — contracts to buy/sell each bar to rebalance
+- **Futures spread** — widens with vol: 1 tick normal → 5 ticks at stress peak
+- **Transaction cost** — `delta_change × futures_spread` per bar, cumulated
+- **Gamma loss** — `0.5 × leverage × return² × notional` per bar, cumulated
+
+### 3. Parameters
+| Parameter | Value |
+|---|---|
+| AUM exposure | $10,000,000 |
+| Leverage | 3x |
+| Gross exposure | $30,000,000 |
+| Contract size | 1,000 barrels |
+| Normal futures spread | 1 tick |
+| Stress futures spread | 5 ticks (at 300% ann. vol) |
+
+---
+
+## Session results — 23 March 2026
+
+| Metric | Value |
+|---|---|
+| Delta at open | 278 contracts |
+| Delta at session low | 320 contracts |
+| Delta rebalance | +42 contracts |
+| Max futures spread | 5 ticks |
+| Transaction costs | 11.4 bps |
+| Gamma loss | 190.1 bps |
+| Total MM cost | 201.5 bps |
+| Gamma % of total | 94% |
+
+**Key findings:**
+- Gamma loss (190 bps) was 17x larger than transaction costs (11 bps) on a -13.3% Brent move
+- 94% of total MM hedging cost came from short gamma exposure, not bid-ask spreads
+- Delta increased mechanically from 278 to 320 contracts (+42) as Brent fell —
+  the MM was forced to buy futures into a falling market to maintain delta neutrality
+- This is the core paradox of leveraged ETP market making: the MM must buy when the market
+  falls and sell when it rises, systematically trading against momentum at the worst prices
+- Futures bid-ask spread widened from 1 to 5 ticks at the vol peak — but this was marginal
+  compared to gamma loss, confirming that spread widening is primarily driven by gamma risk
+  pricing, not by the MM's own transaction costs
+- Practical implication: a MM quoting 800 bps spreads on 3BRL during this event
+  was not being opportunistic — 201 bps of realized hedging cost justifies wide spreads
+  even before accounting for inventory risk and gap risk
+
+---
+
+## Output
+
+Live dashboard → [delta_hedging.html](https://benjadeville.github.io/etp-mm/2_delta_hedging/delta_hedging.html)
 
 ---
 
@@ -111,9 +218,10 @@ Python · yfinance · pandas · numpy · matplotlib · scipy
 ```bash
 pip install yfinance pandas numpy matplotlib scipy
 jupyter notebook 1_spread_model/spread_model.ipynb
+jupyter notebook 2_delta_hedging/delta_hedging.ipynb
 ```
 
 > **Note on data availability:** yfinance provides 1-min intraday data
 > for the last 7 days only. The notebook was run on 23 March 2026 to
 > capture the Trump/Iran spike in real time. For reproducibility,
-> the chart and HTML output are committed to the repo.
+> the HTML output are committed to the repo.
