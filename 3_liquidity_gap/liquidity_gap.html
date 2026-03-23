@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETP MM — Liquidity Gap | 23 Mar 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d1117;color:#e6edf3;font-family:'Inter',sans-serif;padding:32px 24px}
+.header{max-width:900px;margin:0 auto 32px}
+.badge{display:inline-block;background:#1c2128;border:1px solid #30363d;color:#8b949e;
+  font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 10px;
+  border-radius:4px;margin-bottom:12px}
+h1{font-size:22px;font-weight:600;color:#e6edf3;margin-bottom:6px}
+.sub{font-size:13px;color:#8b949e;font-family:'JetBrains Mono',monospace}
+.event-box{max-width:900px;margin:0 auto 28px;background:#161b22;
+  border:1px solid #30363d;border-left:3px solid #ffa657;
+  border-radius:6px;padding:14px 18px}
+.event-box .time{font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:#ffa657;margin-bottom:4px}
+.event-box p{font-size:13px;color:#c9d1d9;line-height:1.6}
+.event-box strong{color:#e6edf3}
+.grid{max-width:900px;margin:0 auto 28px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px}
+.card .label{font-size:10px;color:#8b949e;text-transform:uppercase;
+  letter-spacing:.6px;margin-bottom:6px;font-family:'JetBrains Mono',monospace}
+.card .value{font-size:22px;font-weight:600}
+.card .delta{font-size:11px;color:#8b949e;margin-top:4px}
+.red{color:#f85149}.orange{color:#ffa657}.green{color:#3fb950}.purple{color:#bc8cff}.blue{color:#58a6ff}
+.chart-wrap{max-width:900px;margin:0 auto 28px;background:#161b22;
+  border:1px solid #30363d;border-radius:8px;padding:20px}
+.chart-wrap img{width:100%;border-radius:4px}
+.stats{max-width:900px;margin:0 auto 28px;background:#161b22;
+  border:1px solid #30363d;border-radius:8px;padding:20px}
+.stats h3{font-size:13px;font-weight:600;color:#e6edf3;margin-bottom:14px;
+  text-transform:uppercase;letter-spacing:.8px;font-family:'JetBrains Mono',monospace}
+.stat-row{display:flex;justify-content:space-between;padding:8px 0;
+  border-bottom:1px solid #21262d;font-size:13px}
+.stat-row:last-child{border-bottom:none}
+.stat-label{color:#8b949e}
+.stat-val{font-family:'JetBrains Mono',monospace;color:#e6edf3;font-weight:500}
+.stat-val.red{color:#f85149}
+.stat-val.orange{color:#ffa657}
+.stat-val.green{color:#3fb950}
+.note{max-width:900px;margin:0 auto 28px;background:#0d2c0d;
+  border:1px solid #1a4a1a;border-radius:8px;padding:14px 18px;
+  font-size:12px;color:#7ee787;line-height:1.7}
+.note strong{color:#3fb950}
+footer{max-width:900px;margin:32px auto 0;font-size:11px;
+  color:#484f58;font-family:'JetBrains Mono',monospace;
+  border-top:1px solid #21262d;padding-top:16px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">etp-market-making / 3_liquidity_gap</div>
+  <h1>ETP Market Making — Liquidity Gap</h1>
+  <div class="sub">WisdomTree 3x Daily Brent Crude (3BRL) · Order book analysis · 23 March 2026</div>
+</div>
+
+<div class="event-box">
+  <div class="time">11:05 → 12:30 London · Liquidity gap event</div>
+  <p>Brent -13.3% in under 2 minutes triggered a <strong>6-minute liquidity gap</strong>
+  (score 97.4/100). A retail investor trying to exit 3BRL during this window
+  would have paid <strong>~215 bps in slippage</strong> — 12x the normal 18 bps execution cost.
+  The MM suspended quotes to absorb risk before re-engaging order books.</p>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="label">Max liquidity score</div>
+    <div class="value red">97.4/100</div>
+    <div class="delta">near-total book disappearance</div>
+  </div>
+  <div class="card">
+    <div class="label">Gap duration</div>
+    <div class="value orange">6 min</div>
+    <div class="delta">11:05 → 12:30 London</div>
+  </div>
+  <div class="card">
+    <div class="label">Avg slippage in gap</div>
+    <div class="value red">215 bps</div>
+    <div class="delta">vs 18 bps normal (12x)</div>
+  </div>
+  <div class="card">
+    <div class="label">Max bar price gap</div>
+    <div class="value orange">5.08%</div>
+    <div class="delta">single 1-min bar move</div>
+  </div>
+</div>
+
+<div class="chart-wrap">
+  <img src="liquidity_gap.png" alt="Liquidity Gap — 4-panel dashboard">
+</div>
+
+<div class="stats">
+  <h3>Session stats</h3>
+  <div class="stat-row"><span class="stat-label">Open price</span><span class="stat-val">$107.92</span></div>
+  <div class="stat-row"><span class="stat-label">Session low</span><span class="stat-val orange">$93.62  (-13.3%)</span></div>
+  <div class="stat-row"><span class="stat-label">Max bar price gap</span><span class="stat-val orange">5.08%</span></div>
+  <div class="stat-row"><span class="stat-label">Normal volume</span><span class="stat-val">52 contracts/min</span></div>
+  <div class="stat-row"><span class="stat-label">Max liquidity score</span><span class="stat-val red">97.4 / 100</span></div>
+  <div class="stat-row"><span class="stat-label">Gap events (score > 70)</span><span class="stat-val red">6 minutes</span></div>
+  <div class="stat-row"><span class="stat-label">Gap window</span><span class="stat-val">11:05 → 12:30</span></div>
+  <div class="stat-row"><span class="stat-label">Max Amihud illiquidity ratio</span><span class="stat-val red">284.47</span></div>
+  <div class="stat-row"><span class="stat-label">Normal slippage</span><span class="stat-val green">18 bps</span></div>
+  <div class="stat-row"><span class="stat-label">Max slippage</span><span class="stat-val red">263 bps</span></div>
+  <div class="stat-row"><span class="stat-label">Avg slippage in gap</span><span class="stat-val red">215 bps</span></div>
+  <div class="stat-row"><span class="stat-label">Slippage vs normal</span><span class="stat-val red">12x</span></div>
+</div>
+
+<div class="note">
+  <strong>Liquidity score methodology.</strong> The score (0-100) combines three signals:
+  <strong>realized vol</strong> (40pts — 300% ann. = max),
+  <strong>price gap</strong> (30pts — bar-to-bar jump),
+  and <strong>Amihud illiquidity ratio</strong> (30pts — price impact per dollar traded).
+  A score above 70 flags a significant liquidity gap. During the 6-minute gap window,
+  a market order on 3BRL would have faced ~215 bps of additional slippage —
+  on top of the already-wide MM spreads from Module 1 (800 bps at peak).
+  Combined execution cost at worst: <strong>~1,015 bps</strong> for a retail exit during the gap.
+</div>
+
+<footer>
+  Data: yfinance BZ=F (Brent 2nd future proxy) · 1-min intraday · 23 Mar 2026 ·
+  Liquidity gap model — Amihud (2002) illiquidity ratio ·
+  github.com/Benjadeville/etp-mm
+</footer>
+
+</body>
+</html>
