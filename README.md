@@ -7,13 +7,13 @@ during an extreme intraday event — calibrated on 23 March 2026.
 
 ## Context
 
-At 12:08 London time, Trump posted on Truth Social that the US and Iran had
+At 11:08 London time, Trump posted on Truth Social that the US and Iran had
 held "very good and productive conversations" on ending hostilities.
 
 Brent 2nd month future: **$107.92 → $93.62 (-13.3%) in under 2 minutes.**
 3BRL (WisdomTree 3x Daily Brent) implied intraday move: **-39.8%**.
 
-The market maker desk suspended quotes for several minutes —
+The market maker desk suspended quotes for 56 minutes —
 not because of a restrike, but because of realized vol explosion
 and delta hedging difficulty on the underlying futures.
 
@@ -59,10 +59,14 @@ spread_bps = base_spread × (realized_vol / vol_normal) ^ β
 - `β` = 2.2 (superlinear — spreads explode faster than vol)
 - Cap at 800 bps (consistent with observed MM behavior)
 
-### 4. Book suspension flags
-Two independent triggers — consistent with the MM message:
-- `spread > 10x normal` (vol-driven)
-- `drawdown < -10%` (directional risk too large to hedge)
+### 4. Book suspension methodology
+Absolute vol thresholds are not meaningful in a prolonged stress regime
+(Iran war context since 28 Feb). Instead, suspension is flagged when
+realized vol exceeds **3x the session baseline** (session median):
+
+- Session vol baseline: **54% ann.** (median)
+- Suspension threshold: **162% ann.** (3x baseline)
+- More robust than a fixed threshold in war-driven vol environments
 
 ---
 
@@ -72,15 +76,17 @@ Two independent triggers — consistent with the MM message:
 |---|---|
 | Brent 2nd future open | $107.92 |
 | Session low | $93.62 (-13.3%) |
-| Session close | $100.46 (-6.9%) |
+| Session close | $101.59 (-5.9%) |
 | Restrike barrier | $86.34 — **not breached** |
 | Max restrike proximity | 66.3% |
 | 3BRL intraday low (est.) | -39.8% |
-| 3BRL end of day (est.) | -20.7% |
+| 3BRL end of day (est.) | -17.6% |
 | Normal MM spread | 18 bps |
+| Vol baseline (session median) | 54% ann. |
+| Suspension threshold | 162% ann. (3x baseline) |
 | Spread at spike | 800 bps (44x normal) |
 | Realized vol at spike | ~300% ann. |
-| Book suspended | 222 min |
+| Book suspended | 56 min (11:05 → 12:49) |
 
 **Key finding:** restrike was not triggered today — the underlying held above
 -20%. The 3BRL lost ~39.8% intraday purely from 3x leverage amplification.
