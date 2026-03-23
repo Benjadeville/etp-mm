@@ -59,10 +59,10 @@ footer{max-width:900px;margin:32px auto 0;font-size:11px;
 </div>
 
 <div class="event-box">
-  <div class="time">12:08 London · Trump Truth Social post</div>
+  <div class="time">11:08 London · Trump Truth Social post</div>
   <p><strong>"The United States and Iran have had very good and productive conversations regarding a complete and total resolution of our hostilities."</strong><br>
-  Brent 2nd future: $107.92 → $93.62 (-13.3%) in under 2 minutes. 
-  3BRL implied: -39.8% intraday. MM desk suspends quotes. 
+  Brent 2nd future: $107.92 → $93.62 (-13.3%) in under 2 minutes.
+  3BRL implied: -39.8% intraday. MM desk suspends quotes for 56 minutes.
   Restrike barrier ($86.34) not breached — underlying held at 66.3% proximity.</p>
 </div>
 
@@ -84,42 +84,44 @@ footer{max-width:900px;margin:32px auto 0;font-size:11px;
   </div>
   <div class="card">
     <div class="label">Book suspended</div>
-    <div class="value purple">222 min</div>
-    <div class="delta">drawdown &lt; -10% all session</div>
+    <div class="value purple">56 min</div>
+    <div class="delta">11:05 → 12:49 London</div>
   </div>
 </div>
 
 <div class="chart-wrap">
-  <img src="../assets/spread_model.png" alt="Spread Model — 4-panel dashboard">
+  <img src="spread_model.png" alt="Spread Model — 4-panel dashboard">
 </div>
 
 <div class="stats">
   <h3>Session stats</h3>
   <div class="stat-row"><span class="stat-label">Open price</span><span class="stat-val">$107.92</span></div>
   <div class="stat-row"><span class="stat-label">Session low</span><span class="stat-val">$93.62  (-13.3%)</span></div>
-  <div class="stat-row"><span class="stat-label">Session close</span><span class="stat-val">$100.46  (-6.9%)</span></div>
+  <div class="stat-row"><span class="stat-label">Session close</span><span class="stat-val">$101.59  (-5.9%)</span></div>
   <div class="stat-row"><span class="stat-label">Restrike barrier</span><span class="stat-val">$86.34  (not breached)</span></div>
   <div class="stat-row"><span class="stat-label">Max restrike proximity</span><span class="stat-val">66.3%</span></div>
   <div class="stat-row"><span class="stat-label">Normal spread</span><span class="stat-val">18 bps</span></div>
+  <div class="stat-row"><span class="stat-label">Vol baseline (session median)</span><span class="stat-val">54% ann.</span></div>
+  <div class="stat-row"><span class="stat-label">Suspension threshold</span><span class="stat-val">162% ann. (3x baseline)</span></div>
   <div class="stat-row"><span class="stat-label">Spread at spike</span><span class="stat-val">800 bps  (44x normal)</span></div>
   <div class="stat-row"><span class="stat-label">Realized vol at spike</span><span class="stat-val">300% ann.</span></div>
-  <div class="stat-row"><span class="stat-label">Book suspended</span><span class="stat-val">222 min</span></div>
+  <div class="stat-row"><span class="stat-label">Book suspended</span><span class="stat-val">56 min  (11:05 → 12:49)</span></div>
   <div class="stat-row"><span class="stat-label">3BRL intraday low</span><span class="stat-val">-39.8%</span></div>
-  <div class="stat-row"><span class="stat-label">3BRL end of day</span><span class="stat-val">-20.7%</span></div>
+  <div class="stat-row"><span class="stat-label">3BRL end of day</span><span class="stat-val">-17.6%</span></div>
 </div>
 
 <div class="note">
-  <strong>Key distinction.</strong> The restrike is triggered by a -20% move on the 
-  underlying (ICE Brent 2nd month future), not on the 3BRL product itself. 
-  Today the underlying fell -13.3% — restrike not triggered, but 3BRL lost ~39.8% 
-  intraday due to 3x leverage. The MM suspended quotes because of realized vol 
-  explosion (~300% ann.) and delta hedging difficulty on futures — not a restrike event. 
-  Spread model: <strong>spread = 18 × (rvol/20)^2.2</strong>, clipped at 800 bps.
+  <strong>Key distinction.</strong> The restrike is triggered by a -20% move on the
+  underlying (ICE Brent 2nd month future), not on the 3BRL product itself.
+  Today the underlying fell -13.3% — restrike not triggered, but 3BRL lost ~39.8%
+  intraday due to 3x leverage. The MM suspended quotes for 56 minutes because of
+  realized vol explosion (~300% ann. vs 54% baseline) — not a restrike event.
+  Spread model: <strong>spread = 18 × (rvol/20)^2.2</strong>, suspension at 3x session vol baseline.
 </div>
 
 <footer>
-  Data: yfinance BZ=F (Brent 2nd future proxy) · 1-min intraday · 23 Mar 2026 · 
-  Spread model calibrated on observed MM behavior · github.com/Benjadeville/etp-market-making
+  Data: yfinance BZ=F (Brent 2nd future proxy) · 1-min intraday · 23 Mar 2026 ·
+  Spread model calibrated on observed MM behavior · github.com/Benjadeville/etp-mm
 </footer>
 
 </body>
