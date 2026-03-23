@@ -205,6 +205,84 @@ expected gamma loss, not just transaction costs.
 
 Live dashboard → [delta_hedging.html](https://benjadeville.github.io/etp-mm/2_delta_hedging/delta_hedging.html)
 
+# Module 3 — Liquidity Gap
+
+Analysis of order book disappearance and execution slippage during the
+6-minute liquidity gap triggered by the Trump/Iran spike on 23 March 2026.
+
+---
+
+## Context
+
+At 11:05 London time, Brent fell -13.3% in under 2 minutes triggering a
+**6-minute liquidity gap** (liquidity score 97.4/100 — near-total book disappearance).
+
+A retail investor trying to exit 3BRL during this window would have paid
+**~215 bps in slippage** — 12x the normal 18 bps execution cost.
+Combined with the 800 bps MM spread from Module 1, total execution cost
+at worst: **~1,015 bps**.
+
+---
+
+## What this notebook models
+
+### 1. Data
+- Source: `yfinance` — ticker `BZ=F` (Brent front future, proxy for 2nd month)
+- Granularity: 1-minute intraday
+- Window: 23 March 2026
+
+### 2. Computed series
+- **Price gap** — bar-to-bar price jump (absolute %)
+- **Volume ratio** — volume vs rolling 20-bar median
+- **Amihud illiquidity ratio** — price impact per dollar traded
+- **Liquidity score** — composite 0-100 combining vol, price gap, Amihud
+- **Execution slippage** — estimated additional cost for a market order in gap
+
+### 3. Liquidity score methodology
+```
+score = vol_score (40pts) + gap_score (30pts) + amihud_score (30pts)
+```
+| Component | Max | Condition |
+|---|---|---|
+| Realized vol | 40 pts | 300% ann. = max |
+| Bar price gap | 30 pts | 2% gap = max |
+| Amihud ratio | 30 pts | 95th percentile = max |
+
+Score > 70 → liquidity gap flagged.
+
+---
+
+## Session results — 23 March 2026
+
+| Metric | Value |
+|---|---|
+| Session low | $93.62 (-13.3%) |
+| Max bar price gap | 5.08% |
+| Normal volume | 52 contracts/min |
+| Max liquidity score | 97.4/100 |
+| Gap events (score > 70) | 6 minutes |
+| Gap window | 11:05 → 12:30 |
+| Max Amihud ratio | 284.47 |
+| Normal slippage | 18 bps |
+| Max slippage | 263 bps |
+| Avg slippage in gap | 215 bps (12x normal) |
+| Combined worst cost | ~1,015 bps (spread + slippage) |
+
+**Key findings:**
+- Liquidity score reached 97.4/100 — near-complete order book disappearance
+- 6-minute gap window consistent with MM message: "took a few minutes to absorb the risk"
+- Amihud ratio of 284.47 confirms extreme price impact per dollar traded
+- Retail investors exiting 3BRL during the gap paid 12x normal execution costs
+- Combined with Module 1 spreads (800 bps), total exit cost reached ~1,015 bps at worst
+- The Amihud ratio is the most sensitive signal — it spikes before the liquidity score
+  crosses 70, making it a useful early warning indicator
+
+---
+
+## Output
+
+Live dashboard → [liquidity_gap.html](https://benjadeville.github.io/etp-mm/3_liquidity_gap/liquidity_gap.html)
+
 ---
 
 ## Stack
@@ -219,6 +297,7 @@ Python · yfinance · pandas · numpy · matplotlib · scipy
 pip install yfinance pandas numpy matplotlib scipy
 jupyter notebook 1_spread_model/spread_model.ipynb
 jupyter notebook 2_delta_hedging/delta_hedging.ipynb
+jupyter notebook 3_liquidity_gap/liquidity_gap.ipynb
 ```
 
 > **Note on data availability:** yfinance provides 1-min intraday data
