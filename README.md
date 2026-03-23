@@ -92,7 +92,7 @@ The MM suspension was entirely vol-driven, not restrike-driven.
 
 ![Spread Model](../assets/spread_model.png)
 
-Live dashboard → [`spread_model.html`](spread_model.html)
+Live dashboard → [spread_model.html](https://benjadeville.github.io/etp-mm/1_spread_model/spread_model.html)
 
 ---
 
