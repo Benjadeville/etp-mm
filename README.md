@@ -100,92 +100,6 @@ Live dashboard → [spread_model.html](https://benjadeville.github.io/etp-mm/1_s
 
 ---
 
-# Module 2 — Restrike Monitor
-
-Real-time barrier surveillance for 3x leveraged ETPs — calibrated on the
-23 March 2026 near-miss event (Brent -13.3%, 66.3% of restrike barrier reached).
-
----
-
-## Context
-
-At 11:08 London time, Brent 2nd month future fell -13.3% in under 2 minutes
-following a Trump Truth Social post on Iran ceasefire talks.
-
-3BRL lost an estimated **-39.8% intraday** — yet no restrike was triggered.
-Only **$7.28 (6.7%)** separated the session low from the -20% barrier.
-An additional -8% move on the underlying would have triggered an intraday reset.
-
----
-
-## Product specs — 3BRL restrike mechanics
-
-| Parameter | Value |
-|---|---|
-| Restrike trigger | -20% intraday on the **underlying** (2nd future) |
-| Restrike effect | Intraday reset — new base price, leverage recalculated |
-| Warning zone | -16% on underlying (80% of barrier) |
-| 3BRL at restrike | ~-60% estimated before reset |
-
-**Key distinction:** the -20% threshold is measured on the **underlying**
-(ICE Brent 2nd month future), not on the 3BRL product itself.
-
----
-
-## What this notebook models
-
-### 1. Data
-- Source: `yfinance` — ticker `BZ=F` (Brent front future, proxy for 2nd month)
-- Granularity: 1-minute intraday
-- Window: 23 March 2026
-
-### 2. Computed series
-- **Intraday drawdown** — from open price $107.92
-- **Restrike proximity** — % of -20% barrier reached (0% = open, 100% = restrike)
-- **Rolling min drawdown** — worst point seen intraday at each bar
-- **Alert zones** — safe / warning (>80%) / restrike (100%)
-- **3BRL estimated performance** — drawdown × 3x leverage
-
-### 3. Alert system
-| Zone | Condition | Color |
-|---|---|---|
-| Safe | proximity < 80% | Green |
-| Warning | proximity 80-99% | Orange |
-| Restrike | proximity ≥ 100% | Red |
-
----
-
-## Session results — 23 March 2026
-
-| Metric | Value |
-|---|---|
-| Open price | $107.92 |
-| Session low | $93.62 (-13.3%) |
-| Restrike barrier | $86.34 — **not breached** |
-| Warning barrier | $90.65 (-16%) |
-| Max restrike proximity | 66.3% |
-| Margin to restrike | $7.28 (6.7% remaining) |
-| Time in warning zone | 0 min |
-| 3BRL intraday low (est.) | -39.8% |
-| 3BRL end of day (est.) | -18.9% |
-| 3BRL at restrike (est.) | -60% → intraday reset |
-
-**Near-miss analysis:**
-
-| Scenario | Brent price | Result |
-|---|---|---|
-| Actual low | $93.62 (-13.3%) | 66.3% proximity — safe |
-| +5% additional | $88.94 (-17.6%) | 88% proximity — still safe |
-| +8% additional | $86.13 (-20.2%) | **Restrike triggered** |
-
----
-
-## Output
-
-Live dashboard → [restrike_monitor.html](https://benjadeville.github.io/etp-mm/2_restrike_monitor/restrike_monitor.html)
-
----
-
 ## Stack
 ```
 Python · yfinance · pandas · numpy · matplotlib · scipy
@@ -197,7 +111,6 @@ Python · yfinance · pandas · numpy · matplotlib · scipy
 ```bash
 pip install yfinance pandas numpy matplotlib scipy
 jupyter notebook 1_spread_model/spread_model.ipynb
-jupyter notebook 2_restrike_monitor/restrike_monitor.ipynb
 ```
 
 > **Note on data availability:** yfinance provides 1-min intraday data
