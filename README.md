@@ -270,7 +270,7 @@ Score > 70 → liquidity gap flagged.
 
 **Key findings:**
 - Liquidity score reached 97.4/100 — near-complete order book disappearance
-- 6-minute gap window consistent with MM message: "took a few minutes to absorb the risk"
+- 6-minute gap window where the MM would absobe the risk
 - Amihud ratio of 284.47 confirms extreme price impact per dollar traded
 - Retail investors exiting 3BRL during the gap paid 12x normal execution costs
 - Combined with Module 1 spreads (800 bps), total exit cost reached ~1,015 bps at worst
