@@ -24,7 +24,7 @@ held "very good and productive conversations" on ending hostilities.
 Brent 2nd month future: **$107.92 → $93.62 (-13.3%) in under 2 minutes.**
 3BRL (WisdomTree 3x Daily Brent) implied intraday move: **-39.8%**.
 
-The market maker desk suspended quotes for 56 minutes —
+The market maker desk would likely have stopped quoting for a short period —
 not because of a restrike, but because of realized vol explosion
 and delta hedging difficulty on the underlying futures.
 
